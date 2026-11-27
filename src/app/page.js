@@ -404,90 +404,104 @@ export default function Storefront() {
       {/* Shopping Bag & Checkout Drawer */}
       {bagOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 flex justify-end">
-          <div className="bg-[#FAF8F5] w-full max-w-md h-full flex flex-col justify-between p-5 overflow-y-auto">
-            <div>
-              <div className="flex items-center justify-between border-b border-[#121212]/10 pb-3">
-                <h2 className="font-serif text-2xl">
-                  {checkoutStep === 'bag'
-                    ? 'Your Shopping Bag'
-                    : checkoutStep === 'checkout'
-                    ? 'Delivery & Payment'
-                    : 'Order Received'}
-                </h2>
-                <button onClick={() => setBagOpen(false)} className="p-1.5">
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
+          <div className="bg-[#FAF8F5] w-full max-w-md h-full flex flex-col justify-between p-5 overflow-y-auto
+              <div>
+        <div className="flex items-center justify-between border-b border-[#121212]/10 pb-3">
+          <h2 className="font-serif text-2xl">
+            {checkoutStep === 'bag'
+              ? 'Your Shopping Bag'
+              : checkoutStep === 'checkout'
+              ? 'Delivery & Payment'
+              : 'Order Received'}
+          </h2>
+          <button onClick={() => setBagOpen(false)} className="p-1.5">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
 
-              {checkoutStep === 'done' ? (
-                <div className="py-12 text-center space-y-3">
-                  <CheckCircle2 className="w-12 h-12 text-emerald-700 mx-auto" />
-                  <h3 className="font-serif text-2xl">Thank You for Choosing ENI&apos;S EMPIRE</h3>
-                  <p className="text-sm text-[#121212]/70">
-                    We have received your order and payment details. Our team will confirm via WhatsApp or phone shortly.
-                  </p>
+        {checkoutStep === 'done' ? (
+          <div className="py-12 text-center space-y-3">
+            <CheckCircle2 className="w-12 h-12 text-emerald-700 mx-auto" />
+            <h3 className="font-serif text-2xl">Thank You for Choosing ENI'S EMPIRE</h3>
+            <p className="text-sm text-[#121212]/70">
+              We have received your order and payment details. Our team will confirm via WhatsApp or phone shortly.
+            </p>
+            <button
+              onClick={() => setBagOpen(false)}
+              className="mt-4 px-6 py-2.5 bg-[#121212] text-[#E5C659] text-xs uppercase tracking-widest rounded"
+            >
+              Continue Shopping
+            </button>
+          </div>
+        ) : checkoutStep === 'bag' ? (
+          <div className="mt-4 space-y-3">
+            {cart.length === 0 ? (
+              <p className="text-sm text-[#121212]/60 py-12 text-center">
+                Your bag is currently empty.
+              </p>
+            ) : (
+              cart.map((item) => (
+                <div
+                  key={item.cartId}
+                  className="bg-white p-3 rounded-lg border border-[#121212]/10 flex justify-between items-start"
+                >
+                  <div>
+                    <p className="font-serif text-lg leading-tight">{item.name}</p>
+                    <p className="text-xs text-[#121212]/60 mt-0.5">
+                      {item.fulfillment_type === 'made_to_order'
+                        ? `Custom Fit (B:${item.measurements.bust} W:${item.measurements.waist} H:${item.measurements.hips})`
+                        : `Ready-to-Wear • Size ${item.size}`}
+                    </p>
+                    <p className="text-sm font-semibold mt-1">
+                      ₦{Number(item.price_ngn).toLocaleString()}
+                    </p>
+                  </div>
                   <button
-                    onClick={() => setBagOpen(false)}
-                    className="mt-4 px-6 py-2.5 bg-[#121212] text-[#C5A059] text-xs uppercase tracking-widest rounded"
+                    onClick={() => removeFromCart(item.cartId)}
+                    className="text-xs text-red-600 underline"
                   >
-                    Continue Shopping
+                    Remove
                   </button>
                 </div>
-              ) : checkoutStep === 'bag' ? (
-                <div className="mt-4 space-y-3">
-                  {cart.length === 0 ? (
-                    <p className="text-sm text-[#121212]/60 py-12 text-center">
-                      Your bag is currently empty.
-                    </p>
-                  ) : (
-                    cart.map((item) => (
-                      <div
-                        key={item.cartId}
-                        className="bg-white p-3 rounded-lg border border-[#121212]/10 flex justify-between items-start"
-                      >
-                        <div>
-                          <p className="font-serif text-lg leading-tight">{item.name}</p>
-                          <p className="text-xs text-[#121212]/60 mt-0.5">
-                            {item.fulfillment_type === 'made_to_order'
-                              ? `Custom Fit (B:${item.measurements.bust} W:${item.measurements.waist} H:${item.measurements.hip})`
-                              : `Ready-to-Wear • Size ${item.size}`}
-                          </p>
-                          <p className="text-sm font-semibold mt-1">
-                            ₦{Number(item.price_ngn).toLocaleString()}
-                          </p>
-                        </div>
-                        <button
-                          onClick={() => removeFromCart(item.cartId)}
-                          className="text-xs text-red-600 underline"
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    ))
-                  )}
-                </div>
-              ) : (
-                <form id="checkout-form" onSubmit={handlePlaceOrder} className="mt-4 space-y-3">
-                  <input
-                    type="text"
-                    required
-                    placeholder="Full Name"
-                    value={customer.name}
-                    onChange={(e) => setCustomer({ ...customer, name: e.target.value })}
-                    className="w-full px-3 py-2.5 bg-white border border-[#121212]/20 rounded text-sm"
-                  />
-                  <input
-                    type="tel"
-                    required
-                    placeholder="Phone / WhatsApp Number"
-                    value={customer.phone}
-                    onChange={(e) => setCustomer({ ...customer, phone: e.target.value })}
-                    className="w-full px-3 py-2.5 bg-white border border-[#121212]/20 rounded text-sm"
-                  />
-                  <textarea
-                    required
-                    rows={2}
-                    placeholder="Delivery Address (City, State & Street)"
-                    value={customer.address}
-                    onChange={(e) => setCustomer({ ...customer, address: e.target.value })}
-                    className="w-ful
+              ))
+            )}
+          </div>
+        ) : (
+          <form id="checkout-form" onSubmit={handlePlaceOrder} className="mt-4 space-y-3">
+            <input
+              type="text"
+              required
+              placeholder="Full Name"
+              value={customer.name}
+              onChange={(e) => setCustomer({ ...customer, name: e.target.value })}
+              className="w-full px-3 py-2.5 bg-white border border-[#121212]/20 rounded text-sm"
+            />
+            <input
+              type="tel"
+              required
+              placeholder="Phone / WhatsApp Number"
+              value={customer.phone}
+              onChange={(e) => setCustomer({ ...customer, phone: e.target.value })}
+              className="w-full px-3 py-2.5 bg-white border border-[#121212]/20 rounded text-sm"
+            />
+            <textarea
+              required
+              rows={2}
+              placeholder="Delivery Address (City, State & Street)"
+              value={customer.address}
+              onChange={(e) => setCustomer({ ...customer, address: e.target.value })}
+              className="w-full px-3 py-2.5 bg-white border border-[#121212]/20 rounded text-sm"
+            />
+            <button
+              type="submit"
+              disabled={submittingOrder}
+              className="w-full py-3 bg-[#121212] text-[#E5C659] text-xs uppercase tracking-widest rounded disabled:opacity-50"
+            >
+              {submittingOrder ? 'Placing Order...' : 'Place Order'}
+            </button>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+                }
