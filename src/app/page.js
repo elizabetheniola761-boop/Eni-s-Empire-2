@@ -105,7 +105,6 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#121212] font-sans">
-      {/* Header */}
       <header className="sticky top-0 z-30 bg-[#121212] text-[#FAF8F5] border-b border-[#E5C659]/25">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <div>
@@ -129,7 +128,6 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* Hero Banner */}
       <section className="bg-[#121212] text-[#FAF8F5] py-14 px-4 text-center border-b border-[#E5C659]/20">
         <div className="max-w-2xl mx-auto space-y-4">
           <p className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.25em] text-[#E5C659]">
@@ -145,7 +143,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Collection Filter */}
       <main className="max-w-6xl mx-auto px-4 py-10">
         <div className="flex gap-2 overflow-x-auto pb-4 mb-6">
           {collections.map((col) => (
@@ -163,7 +160,6 @@ export default function HomePage() {
           ))}
         </div>
 
-        {/* Product Grid */}
         {loading ? (
           <p className="text-center py-20 text-sm text-[#121212]/60">Loading collection...</p>
         ) : filteredProducts.length === 0 ? (
@@ -224,7 +220,6 @@ export default function HomePage() {
         )}
       </main>
 
-      {/* Product Customization Modal */}
       {selectedProduct && (
         <div className="fixed inset-0 z-40 bg-black/60 flex items-end sm:items-center justify-center p-4">
           <div className="bg-[#FAF8F5] w-full max-w-md rounded-2xl p-6 space-y-4 max-h-[90vh] overflow-y-auto">
@@ -307,7 +302,6 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* Shopping Bag & Checkout Drawer */}
       {bagOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 flex justify-end">
           <div className="bg-[#FAF8F5] w-full max-w-md h-full p-6 flex flex-col justify-between overflow-y-auto">
@@ -428,5 +422,5 @@ export default function HomePage() {
       )}
     </div>
   );
-                 }
-        
+}
+  
